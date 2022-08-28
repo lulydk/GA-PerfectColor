@@ -1,0 +1,21 @@
+{
+    "implementation": "fill-all",
+
+    "selection": "elite",
+    "population_n": 1000,
+    "individuals_k": 200,
+    "individuals_m": 100,
+    "treshold": 0.5,
+
+    "crossover": "one-p",
+    "cross_prob": 0.5,
+
+    "mutation": "gen",
+    "mut_prob": 0.2,
+
+    "cut-criteria": {
+        "method": "generations",
+        "value": 100
+    }
+
+}
