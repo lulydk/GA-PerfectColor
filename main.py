@@ -1,11 +1,16 @@
 import json
-from color_diff import delta_e_cie2000
+from genetic_algorithm.artist_palette import ArtistPalette
 from input_handler import InputHandler
 
 with open('config.json', 'r') as f:
     input = json.load(f)
     input_handler = InputHandler(input)
 
-for color in input_handler.lab_color_palette:
-    delta_e = delta_e_cie2000(color, input_handler.goal_color)
-    print(f"The delta_e between {color} and {input_handler.goal_color} is {delta_e}")
+artist_palette = ArtistPalette(input_handler.lab_color_palette, input_handler.population_n)
+
+'''
+print(f"The target is {input_handler.target_color}\n")
+for color in artist_palette.get_best_colors(input_handler.target_color):
+    delta_e = color.get_delta(input_handler.target_color)
+    print(f"The delta_e is {delta_e}\n")
+'''

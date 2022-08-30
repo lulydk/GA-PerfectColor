@@ -1,22 +1,24 @@
 from colormath.color_objects import sRGBColor, LabColor
 from colormath.color_conversions import convert_color
 
+from genetic_algorithm.color import Color
+
 class InputHandler:
 
     def arr_to_lab(self, color_array):
         lab_color_palette = []
         for color in color_array:
-            color_rgb = sRGBColor(color[0],color[1],color[2])
-            lab_color_palette.append(convert_color(color_rgb, LabColor))
+            # color_rgb = sRGBColor(color[0],color[1],color[2])
+            color_lab = convert_color(sRGBColor(color[0],color[1],color[2], True), LabColor)
+            lab_color_palette.append(Color(color_lab.lab_l, color_lab.lab_a, color_lab.lab_b))
             # lab_color_palette.append(color_rgb)
         return lab_color_palette
     
     def __init__(self, input):
-
         self.lab_color_palette = self.arr_to_lab(input['color_palette'])
-        # self.goal_color = sRGBColor(input['goal_color'][0],input['goal_color'][1],input['goal_color'][2])
-        self.goal_color = convert_color(sRGBColor(input['goal_color'][0],input['goal_color'][1],input['goal_color'][2]), LabColor)
-        
+        # self.target_color = sRGBColor(input['target_color'][0],input['target_color'][1],input['target_color'][2])
+        target_color_lab = convert_color(sRGBColor(input['target_color'][0],input['target_color'][1],input['target_color'][2], True), LabColor)
+        self.target_color = Color(target_color_lab.lab_l, target_color_lab.lab_a, target_color_lab.lab_b)
         # GA Hyperparameters
         ## Implementation
         self.implementation = input['hyperparameters']['implementation']
