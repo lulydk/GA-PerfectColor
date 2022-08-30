@@ -1,5 +1,5 @@
 import numpy as np
-from color_diff import delta_e_cie2000
+from lib.color_diff import delta_e_cie2000
 from colormath.color_objects import LabColor
 
 class Color:

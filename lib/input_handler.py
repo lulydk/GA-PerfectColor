@@ -1,6 +1,5 @@
 from colormath.color_objects import sRGBColor, LabColor
 from colormath.color_conversions import convert_color
-
 from genetic_algorithm.color import Color
 
 class InputHandler:

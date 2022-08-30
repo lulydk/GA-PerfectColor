@@ -1,6 +1,6 @@
 import json
 from genetic_algorithm.artist_palette import ArtistPalette
-from input_handler import InputHandler
+from lib.input_handler import InputHandler
 
 with open('config.json', 'r') as f:
     input = json.load(f)
