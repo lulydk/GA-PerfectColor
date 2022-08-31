@@ -22,7 +22,7 @@ class InputHandler:
         ## Implementation
         self.implementation = input['hyperparameters']['implementation']
         ## Selection
-        self.selection = input['hyperparameters']['selection']
+        self.selection_method = input['hyperparameters']['selection']
         self.population_n = input['hyperparameters']['population_n']
         self.individuals_k = input['hyperparameters']['individuals_k']
         self.individuals_m = input['hyperparameters']['individuals_m']

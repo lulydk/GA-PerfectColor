@@ -1,6 +1,9 @@
 import numpy as np
 from random import randint
+from lib.constants import *
 from genetic_algorithm.color import Color
+from genetic_algorithm.methods.selection import *
+from genetic_algorithm.methods.crossover import *
 
 class ArtistPalette:
 
@@ -10,7 +13,27 @@ class ArtistPalette:
     def get_best_colors(self, target_color):
         return sorted(self.color_palette, key=lambda c: c.get_delta(target_color))
 
-    def mix_new_generation():
+    def print_color_palette(self):
+        print("[")
+        for color in self.color_palette:
+            print(f"{color}")
+        print("]")
+
+    def mix_new_generation(self, input_data):
+        # Selection
+        selected = []
+        if (input_data.selection_method == ELITE):
+            selected = elite(self.color_palette, input_data.individuals_k, input_data.target_color)
+        elif (input_data.selection_method == ROULETTE):
+            selected = roulette(self.color_palette, input_data.individuals_k, input_data.target_color)
+            pass
+        elif (input_data.selection_method == DET_TOURNAMENT):
+            selected = det_tournament(self.color_palette, input_data.individuals_k, input_data.target_color)
+        print(selected)
+        # Crossover
+        #one_point_crossover()
+        # Mutation
+
         pass
 
     # color_proportions = { color1: 0.25, color2: 0.40, color3: 0.35 }
