@@ -9,3 +9,8 @@ ONE_POINT = 'one-p'
 TWO_POINT = 'two-p'
 ANULAR = 'anular'
 UNIFORM = 'uniform'
+
+GEN = 'gen'
+
+GENERATIONS = 'generations'
+TRESHOLD = 'treshold'

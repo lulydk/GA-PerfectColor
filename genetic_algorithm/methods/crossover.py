@@ -49,12 +49,13 @@ def one_point_crossover(population, genes):
         cielab1 = np.zeros(3)
         cielab2 = np.zeros(3)
         for key in genes:
-            cielab1[0] += (key.cielab[0] * color_prop1[key])
-            cielab1[1] += (key.cielab[1] * color_prop1[key])
-            cielab1[2] += (key.cielab[2] * color_prop1[key])
-            cielab2[0] += (key.cielab[0] * color_prop2[key])
-            cielab2[1] += (key.cielab[1] * color_prop2[key])
-            cielab2[2] += (key.cielab[2] * color_prop2[key])
-        children.append(Color(cielab1[0],cielab1[1],cielab1[2], color_prop1))
-        children.append(Color(cielab2[0],cielab2[1],cielab2[2], color_prop2))
+            cielab1[0] += (key.coord[0] * color_prop1[key])
+            cielab1[1] += (key.coord[1] * color_prop1[key])
+            cielab1[2] += (key.coord[2] * color_prop1[key])
+            cielab2[0] += (key.coord[0] * color_prop2[key])
+            cielab2[1] += (key.coord[1] * color_prop2[key])
+            cielab2[2] += (key.coord[2] * color_prop2[key])
+        is_rgb = genes[0].is_rgb
+        children.append(Color(cielab1[0],cielab1[1],cielab1[2], is_rgb, color_prop1))
+        children.append(Color(cielab2[0],cielab2[1],cielab2[2], is_rgb, color_prop2))
     return children

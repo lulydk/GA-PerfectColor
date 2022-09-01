@@ -1,9 +1,13 @@
+def delta_e_rgb(rgb1, rgb2):
+    rm = 0.5*(rgb1[0]+rgb2[0])
+    d = abs(sum((2+rm,4,3-rm)*(rgb1-rgb2)**2))**0.5
+    return d
+
 # The functions in this module are used for comparing two LabColor objects
 # using various Delta E formulas
 
 # Adapted from colormath.color_diff https://python-colormath.readthedocs.io/en/latest/_modules/colormath/color_diff.html
 # as it was rendered useless by deprecated function numpy.asscalar()
-
 
 import numpy as np
 from colormath import color_diff_matrix
