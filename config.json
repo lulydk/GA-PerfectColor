@@ -1,13 +1,13 @@
 {
-    "color_palette": [[0, 255, 0], [255, 0, 25], [0, 0, 0]],
-    "target_color": [255, 255, 0],
+    "color_palette": [[250, 0, 10], [36, 250, 90], [0, 100, 255], [100, 250, 100]],
+    "target_color": [255, 255, 100],
 
     "hyperparameters" : {
-        "implementation": "fill-all",
+        "implementation": "fill-parent",
 
-        "selection": "elite",
-        "population_n": 10,
-        "individuals_k": 5,
+        "selection": "roulette",
+        "population_n": 100,
+        "individuals_k": 20,
 
         "_torneos": "",
         "individuals_m": 100,
