@@ -28,7 +28,7 @@ class InputHandler:
         self.individuals_m = input['hyperparameters']['individuals_m']
         self.treshold = input['hyperparameters']['treshold']
         ## Crossover
-        self.crossover = input['hyperparameters']['crossover']
+        self.crossover_method = input['hyperparameters']['crossover']
         self.cross_prob = input['hyperparameters']['cross_prob']
         ## Mutation
         self.mutation = input['hyperparameters']['mutation']

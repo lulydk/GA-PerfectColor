@@ -45,12 +45,13 @@ def roulette(generation, k_value, target_color):
     # Generate k random numbers
     # and select the k colors that verify
     selected_colors = []
-    for i in k_value:
+    for i in range(k_value):
         selected_value = random.random()
         j = 0
         for value in cumulative_props:
             if(value >= selected_value):
                 selected_colors.append(generation[j])
+                break
             j += 1
     return selected_colors
 

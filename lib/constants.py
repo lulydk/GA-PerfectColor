@@ -6,3 +6,6 @@ ROULETTE = 'roulette'
 DET_TOURNAMENT = 'det-tournament'
 
 ONE_POINT = 'one-p'
+TWO_POINT = 'two-p'
+ANULAR = 'anular'
+UNIFORM = 'uniform'
