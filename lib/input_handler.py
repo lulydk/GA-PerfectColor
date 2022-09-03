@@ -1,8 +1,19 @@
+import numpy as np
+from random import randint
 from colormath.color_objects import sRGBColor, LabColor
 from colormath.color_conversions import convert_color
 from genetic_algorithm.color import Color
 
 class InputHandler:
+
+    def random_color_palette(self, filepath):
+        color_count = randint(3,100)
+        #color_count = 5
+        arr = np.random.randint(0, 255, (color_count,3))
+        with open(filepath, "w") as file:
+            for color in arr:
+                file.write(f"{color[0]} {color[1]} {color[2]}\n")
+        return arr
 
     def arr_to_colors(self, color_array, work_with_rgb):
         color_palette = []
@@ -17,7 +28,16 @@ class InputHandler:
     
     def __init__(self, input):
         self.work_with_rgb = input['work_with_rgb']
-        self.color_palette = self.arr_to_colors(input['color_palette'], input['work_with_rgb'])
+        # Color Palette
+        input_color_palette = []
+        if(input['random_palette']):
+            input_color_palette = self.random_color_palette(input['color_palette_file'])
+        else:
+            input_color_palette = np.genfromtxt(input['color_palette_file'])
+            if (len(input_color_palette) == 0):
+                raise Exception(f"Empty input file {input['color_palette_file']}")
+        self.color_palette = self.arr_to_colors(input_color_palette, input['work_with_rgb'])
+        # Target Color
         if(input['work_with_rgb']):
             self.target_color = Color(input['target_color'][0], input['target_color'][1], input['target_color'][2], True)
         else:

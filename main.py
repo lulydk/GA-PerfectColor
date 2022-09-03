@@ -1,5 +1,6 @@
 import sys
 import json
+import numpy as np
 from lib.constants import *
 from functions import frame1, grid
 from lib.input_handler import InputHandler
@@ -13,24 +14,33 @@ with open('config.json', 'r') as f:
     input = json.load(f)
     input_handler = InputHandler(input)
 
-def cut(iteration, delta):
+def cut(iteration, delta, best=None):
     if (input_handler.cut_method == GENERATIONS):
-        return iteration < input_handler.cut_value
+        return iteration >= input_handler.cut_value
     elif (input_handler.cut_method == TRESHOLD):
-        return delta > input_handler.cut_value
+        return delta <= input_handler.cut_value
     else:
-        return delta > 3 and iteration < 3000
+        if (iteration - best[0] > 100 and abs(delta - best[1]) < 0.00001):
+            print("Cut by exhaustion")
+            return True
 
 def main():
+    #'''
     # Simulation
     artist_palette = ArtistPalette(input_handler.color_palette, input_handler.population_n)
     target = input_handler.target_color
     delta_e = 1000
     iteration_count = 0
-    while (cut(iteration_count,delta_e)):
+    best_result = np.zeros(2)
+    best_result[0] = iteration_count
+    best_result[1] = delta_e
+    while (not cut(iteration_count,delta_e,best_result)):
         artist_palette.mix_new_generation(input_handler)
-        best = artist_palette.get_best_colors(target)[0]
+        best = artist_palette.best_color
         delta_e = best.get_delta(target)
+        if (delta_e < best_result[1]):
+            best_result[0] = iteration_count
+            best_result[1] = delta_e
         print(f"#{iteration_count} with delta_e = {delta_e}")
         iteration_count += 1
     if (input_handler.work_with_rgb):
@@ -58,6 +68,7 @@ def main():
     window.setLayout(grid)
     window.show()
     sys.exit(app.exec())
+    #'''
 
 if __name__ == "__main__":
     main()

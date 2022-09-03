@@ -33,18 +33,21 @@ class ArtistPalette:
         elif (input_data.crossover_method == TWO_POINT):
             pass
         
+        #mutated_children = selected
+        #'''
         # Mutation
         mutated_children = []
-        #mutated_children = children
         if (input_data.mutation_method == GEN):
             #mutated_children = gen_mutation(children,self.base_colors,input_data.mut_prob)
             pass
         else:
             for c in children:
-                if (random() > 0.03):
-                    mutated_children.append(self.generate_color())
+                if (random() < input_data.mut_prob):
+                    new = self.generate_color()
+                    mutated_children.append(new)
                 else:
                     mutated_children.append(c)
+        #'''
                     
         # Forming new generation
         new_generation = []
@@ -60,6 +63,7 @@ class ArtistPalette:
                 for i in range(input_data.population_n - input_data.individuals_k):
                     new_generation.append(best_last_gen[i])
         
+        self.best_color = new_generation[0]
         self.color_palette = new_generation
 
 
@@ -90,5 +94,6 @@ class ArtistPalette:
         return color_palette
 
     def __init__(self, base_colors, population_count):
+        self.best_color = None
         self.base_colors = base_colors
         self.color_palette = self.spawn_colors(population_count)

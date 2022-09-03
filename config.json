@@ -1,14 +1,16 @@
 {
-    "work_with_rgb": 0,
-    "color_palette": [[0, 0, 255], [0, 255, 0], [255, 0, 0], [250, 250, 100]],
     "target_color": [255, 255, 100],
+    
+    "work_with_rgb": 0,
+    "random_palette": 1,
+    "color_palette_file": "color_palette.txt",
 
     "hyperparameters" : {
         "implementation": "fill-all",
 
         "selection": "roulette",
-        "population_n": 15,
-        "individuals_k": 5,
+        "population_n": 200,
+        "individuals_k": 50,
 
         "_torneos": "",
         "individuals_m": 100,
@@ -18,11 +20,11 @@
         "cross_prob": 0.5,
 
         "mutation": "",
-        "mut_prob": 0.2,
+        "mut_prob": 0.9,
 
         "cut_criteria": {
-            "method": "generations",
-            "value": 1000
+            "method": "treshold",
+            "value": 5
         }
     }
 }
