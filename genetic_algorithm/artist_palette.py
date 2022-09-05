@@ -29,12 +29,10 @@ class ArtistPalette:
         # Crossover
         children = []
         if (input_data.crossover_method == ONE_POINT):
-            children = one_point_crossover(selected, self.base_colors)
+            children = one_point_crossover(selected, input_data.cross_prob, self.base_colors)
         elif (input_data.crossover_method == TWO_POINT):
             pass
         
-        #mutated_children = selected
-        #'''
         # Mutation
         mutated_children = []
         if (input_data.mutation_method == GEN):
@@ -42,13 +40,12 @@ class ArtistPalette:
             pass
         else:
             for c in children:
-                if (random() < input_data.mut_prob):
+                if (random.uniform(0,1) < input_data.mut_prob):
                     new = self.generate_color()
                     mutated_children.append(new)
                 else:
                     mutated_children.append(c)
-        #'''
-                    
+               
         # Forming new generation
         new_generation = []
         if (input_data.implementation == FILL_ALL):
@@ -73,7 +70,7 @@ class ArtistPalette:
         color_proportions = {}
         # Generates a random number for each proportion
         for color in self.base_colors:
-            proportion = random()
+            proportion = random.uniform(0,1)
             sum += proportion
             color_proportions[color] = proportion
         # The sum of proportions has to be equal to 1
