@@ -1,3 +1,5 @@
+ERROR = 0.00001
+
 FILL_ALL = 'fill-all'
 FILL_PARENT = 'fill-parent'
 

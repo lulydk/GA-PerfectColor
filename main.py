@@ -2,8 +2,9 @@ import sys
 import json
 import numpy as np
 from lib.constants import *
-from functions import frame1, grid
+from lib.window_frame import frame1, grid
 from lib.input_handler import InputHandler
+import PyQt5.QtGui as qtg
 from PyQt5.QtWidgets import QApplication, QWidget
 from colormath.color_conversions import convert_color
 from colormath.color_objects import LabColor, sRGBColor
@@ -20,56 +21,82 @@ def cut(iteration, delta, best=None):
     elif (input_handler.cut_method == TRESHOLD):
         return delta <= input_handler.cut_value
     else:
-        if (iteration - best[0] > 200 and abs(delta - best[1]) < 0.00001):
+        if (iteration - best[0] > 200 and abs(delta - best[1]) < ERROR):
             print("Cut by exhaustion")
             return True
 
-def main():
-    #'''
-    # Simulation
-    artist_palette = ArtistPalette(input_handler.color_palette, input_handler.population_n, input_handler.target_color)
-    target = input_handler.target_color
-    delta_e = 1000
+def run_simulation(target, color_palette, population_n):
+    artist_palette = ArtistPalette(color_palette, population_n, target)
+    best = artist_palette.best_color
+    delta_e = best.get_fitness(target)
     iteration_count = 0
-    best_result = np.zeros(2)
-    best_result[0] = iteration_count
-    best_result[1] = delta_e
-    while (not cut(iteration_count,delta_e,best_result)):
+    best_ever = np.zeros(2)
+    best_ever[0], best_ever[1] = iteration_count, delta_e
+    while (not cut(iteration_count,delta_e,best_ever)):
         artist_palette.mix_new_generation(input_handler)
         best = artist_palette.best_color
         delta_e = best.get_delta(target)
-        if (abs(delta_e - best_result[1]) >= 0.00001):
-            best_result[0] = iteration_count
-            best_result[1] = delta_e
-        print(f"#{iteration_count} with delta_e = {delta_e}")
+        if (abs(delta_e - best_ever[1]) >= ERROR):
+            best_ever[0] = iteration_count
+            best_ever[1] = delta_e
+        if (iteration_count % 10 == 0):
+            print(f"#{iteration_count} with delta_e = {delta_e}")
         iteration_count += 1
-    if (input_handler.work_with_rgb):
-        coords = "RGB"
-    else:
-        target_color = convert_color(LabColor(target.coord[0], target.coord[1], target.coord[2]), sRGBColor)
-        color1 = sRGBColor(target_color.clamped_rgb_r, target_color.clamped_rgb_g, target_color.clamped_rgb_b)
-        best_color = convert_color(LabColor(best.coord[0], best.coord[1], best.coord[2]), sRGBColor)
-        color2 = sRGBColor(best_color.clamped_rgb_r, best_color.clamped_rgb_g, best_color.clamped_rgb_b)
-        coords = "L*a*b"
-    # File output
-    with open("output.txt", "w") as external_file:
-        add_text = f"TARGET COLOR\n{coords}: {target}\n\nBEST COLOR\n{coords}: {best.coord}\nColor proportions:\n{best}\n\nDelta: {round(best.get_delta(target),4)}"
+    return best
+
+def write_recipe(is_rgb, target, best):
+    coords = "RGB"
+    if (not is_rgb):
+        coords = "L*a*b*"
+    with open("output/recipe.txt", "w") as external_file:
+        add_text = f"DELTA\t\t\t{round(best.get_delta(target),4)}\n\nTARGET COLOR\t{coords}: {target.coord}\n\nBEST COLOR\t\t{coords}: {best.coord}\n\nRECIPE\n[ Base color ]: Proportion\n\n{best}"
         print(add_text, file=external_file)
-        external_file.close()
-    print("Results in output.txt")
-    # Visualization
+    print("Results in output/recipe.txt")
+
+def run_visualization(target, finished_color):
     app = QApplication(sys.argv)
     window = QWidget()
     window.setWindowTitle("Perfect Color")
+    window.setWindowIcon(qtg.QIcon('icon.png'))
     window.setFixedWidth(800)
     if (input_handler.work_with_rgb):
-        frame1(f"rgb({int(target.coord[0])},{int(target.coord[1])},{int(target.coord[2])})", f"rgb({int(best.coord[0])},{int(best.coord[1])},{int(best.coord[2])})",f"RGB: {target}",f"RGB: [{int(best.coord[0])} {int(best.coord[1])} {int(best.coord[2])}]\n\nColor proportions:\n{best}\n\nDelta: {round(best.get_delta(target),4)}")
+        frame1( 
+                f"rgb({int(target.coord[0])},{int(target.coord[1])},{int(target.coord[2])})",
+                f"RGB: {input_handler.rgb_target}",
+                f"rgb({int(finished_color.coord[0])},{int(finished_color.coord[1])},{int(finished_color.coord[2])})",
+                f"RGB: [{int(finished_color.coord[0])}, {int(finished_color.coord[1])}, {int(finished_color.coord[2])}]",
+                f"Delta: {round(finished_color.get_delta(target),4)}",
+                f"Color proportions:\n{finished_color}"
+              )
     else:
-        frame1(color1.get_rgb_hex(), color2.get_rgb_hex(),f"{coords}: {target}",f"{coords}: {best.coord}\n\nColor proportions:\n{best}\n\nDelta: {round(best.get_delta(target),4)}")
+        best_to_rgb = convert_color(LabColor(finished_color.coord[0], finished_color.coord[1], finished_color.coord[2]), sRGBColor)
+        target_to_rgb = sRGBColor(input_handler.rgb_target[0]/255, input_handler.rgb_target[1]/255, input_handler.rgb_target[2]/255, False)
+        frame1(
+                target_to_rgb.get_rgb_hex(),
+                f"- L*a*b: [ {int(target.coord[0])}, {int(target.coord[1])}, {int(target.coord[2])} ]\n- RGB: {input_handler.rgb_target}",
+                best_to_rgb.get_rgb_hex(),
+                f"- L*a*b: [ {int(finished_color.coord[0])}, {int(finished_color.coord[1])}, {int(finished_color.coord[2])} ]\n- RGB: {finished_color.to_rgb_string()}",
+                f"Delta: {round(finished_color.get_delta(target),4)}",
+                f"Color proportions:\n{finished_color}"
+              )
     window.setLayout(grid)
     window.show()
     sys.exit(app.exec())
-    #'''
+
+def main():
+    # Simulation
+    target = input_handler.target_color
+    finished_color = run_simulation(target, input_handler.color_palette, input_handler.population_n)
+    # File outputs
+    ## Recipe with color proportions
+    write_recipe(input_handler.work_with_rgb, target, finished_color)
+    ## Data for graphics
+    with open("output/graphics.txt", "w") as external_file:
+        add_text = f""
+        print(add_text, file=external_file)
+    print("Simulation data in output/graphics.txt")
+    # Visualization
+    run_visualization(target, finished_color)
 
 if __name__ == "__main__":
     main()

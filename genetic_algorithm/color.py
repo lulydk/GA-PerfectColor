@@ -10,6 +10,14 @@ class Color:
 
     epsilon = 0.0000001 # Avoid dividing by zero when getting fitness
     
+    def to_rgb_string(self):
+        if (self.is_rgb):
+            return f"[ {int(self.coord[0])}, {int(self.coord[1])}, {int(self.coord[2])} ]"
+        else:
+            conversion = convert_color(LabColor(self.coord[0], self.coord[1], self.coord[2]), sRGBColor)
+            rgb_color = [conversion.clamped_rgb_r, conversion.clamped_rgb_g, conversion.clamped_rgb_b]
+            return f"[ {int(rgb_color[0]*255)}, {int(rgb_color[1]*255)}, {int(rgb_color[2]*255)} ]"
+
     def get_delta(self, other):
         if (self.is_rgb and other.is_rgb):
             delta_e = delta_e_rgb(self.coord, other.coord)
@@ -59,10 +67,11 @@ class Color:
     def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
+
     def __str__(self) -> str:
         if(self.color_proportions == None):
             return str(self.coord)
-        return '\n'.join([f'{key}: {round(value,4)}' for key, value in self.color_proportions.items()])
+        return '\n'.join([f'{key.to_rgb_string()}: {round(value,4)}' for key, value in self.color_proportions.items()])
 
     def __repr__(self) -> str:
         return self.__str__()

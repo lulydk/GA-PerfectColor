@@ -1,8 +1,8 @@
 # Folders
 __pycache__
 ga_color
+output
 
 # Files
-output.txt
 color_palette.txt
 window.ui

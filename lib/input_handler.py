@@ -8,7 +8,6 @@ class InputHandler:
 
     def random_color_palette(self, filepath):
         color_count = randint(3,100)
-        #color_count = 5
         arr = np.random.randint(0, 255, (color_count,3))
         with open(filepath, "w") as file:
             for color in arr:
@@ -22,26 +21,28 @@ class InputHandler:
                 color_palette.append(Color(color[0], color[1], color[2], True))
         else:
             for color in color_array:
-                color_lab = convert_color(sRGBColor(color[0],color[1],color[2], True), LabColor)
-                color_palette.append(Color(color_lab.lab_l, color_lab.lab_a, color_lab.lab_b, False))
+                color_lab = convert_color(sRGBColor(color[0]/255,color[1]/255,color[2]/255, False), LabColor)
+                new_color = Color(color_lab.lab_l, color_lab.lab_a, color_lab.lab_b, False)
+                color_palette.append(new_color)
         return color_palette
     
     def __init__(self, input):
         self.work_with_rgb = input['work_with_rgb']
         # Color Palette
-        input_color_palette = []
-        if(input['random_palette']):
-            input_color_palette = self.random_color_palette(input['color_palette_file'])
+        self.input_color_palette = []
+        if (input['random_palette']):
+            self.input_color_palette = self.random_color_palette(input['color_palette_file'])
         else:
-            input_color_palette = np.genfromtxt(input['color_palette_file'])
-            if (len(input_color_palette) == 0):
+            self.input_color_palette = np.genfromtxt(input['color_palette_file'])
+            if (len(self.input_color_palette) == 0):
                 raise Exception(f"Empty input file {input['color_palette_file']}")
-        self.color_palette = self.arr_to_colors(input_color_palette, input['work_with_rgb'])
+        self.color_palette = self.arr_to_colors(self.input_color_palette, input['work_with_rgb'])
         # Target Color
-        if(input['work_with_rgb']):
+        self.rgb_target = input['target_color']
+        if (input['work_with_rgb']):
             self.target_color = Color(input['target_color'][0], input['target_color'][1], input['target_color'][2], True)
         else:
-            target_color_lab = convert_color(sRGBColor(input['target_color'][0],input['target_color'][1],input['target_color'][2], True), LabColor)
+            target_color_lab = convert_color(sRGBColor(input['target_color'][0]/255,input['target_color'][1]/255,input['target_color'][2]/255, False), LabColor)
             self.target_color = Color(target_color_lab.lab_l, target_color_lab.lab_a, target_color_lab.lab_b, False)
         # GA Hyperparameters
         ## Implementation

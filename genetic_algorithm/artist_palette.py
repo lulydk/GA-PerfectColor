@@ -11,11 +11,11 @@ class ArtistPalette:
     # base_colors = [ color1, ..., colorG ] GENOMES
     # color_palette = [ color1, ..., colorN ] CURRENT GENERATION
 
-    def get_best_colors(self):
+    def get_best_colors(self) -> Color:
         return sorted(self.color_palette, key=lambda c: c.get_fitness(self.target_color), reverse=True)
 
 
-    def mix_new_generation(self, input_data):
+    def mix_new_generation(self, input_data) -> None:
 
         # Selection
         selected = []
@@ -65,7 +65,7 @@ class ArtistPalette:
 
 
     # color_proportions = { color1: 0.25, color2: 0.40, color3: 0.35 }
-    def generate_color(self):
+    def generate_color(self) -> Color:
         sum = 0
         color_proportions = {}
         # Generates a random number for each proportion
@@ -84,14 +84,14 @@ class ArtistPalette:
             coord[2] += (key.coord[2] * color_proportions[key])
         return Color(coord[0],coord[1],coord[2], self.base_colors[0].is_rgb, color_proportions, self.target_color)
 
-    def spawn_colors(self, population_count):
+    def spawn_colors(self, population_count) -> list:
         color_palette = []
         for i in range(population_count):
             color_palette.append(self.generate_color())
         return color_palette
 
     def __init__(self, base_colors, population_count, target_color):
-        self.best_color = None
         self.base_colors = base_colors
         self.target_color = target_color
         self.color_palette = self.spawn_colors(population_count)
+        self.best_color = self.get_best_colors()[0]
