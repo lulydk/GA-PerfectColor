@@ -11,49 +11,35 @@ from colormath.color_objects import LabColor, sRGBColor
 from genetic_algorithm.artist_palette import ArtistPalette
 
 
-with open('config.json', 'r') as f:
-    input = json.load(f)
-    input_handler = InputHandler(input)
-
-def cut(iteration, delta, best=None):
-    if (input_handler.cut_method == GENERATIONS):
-        return iteration >= input_handler.cut_value
-    elif (input_handler.cut_method == TRESHOLD):
-        return delta <= input_handler.cut_value
+def cut(iteration, delta, best, cut_method, cut_generation, cut_delta):
+    if (cut_method == GENERATIONS):
+        return iteration >= cut_generation
+    elif (cut_method == TRESHOLD):
+        return delta <= cut_delta
     else:
-        if (iteration - best[0] > 200 and abs(delta - best[1]) < ERROR):
+        if (iteration - best[0] > cut_generation and abs(delta - best[1]) < ERROR):
             print("Cut by exhaustion")
             return True
 
-def run_simulation(target, color_palette, population_n):
-    artist_palette = ArtistPalette(color_palette, population_n, target)
+def run_simulation(target, input_handler):
+    artist_palette = ArtistPalette(input_handler.color_palette, input_handler.population_n, target)
     best = artist_palette.best_color
     delta_e = best.get_fitness(target)
     iteration_count = 0
     best_ever = np.zeros(2)
     best_ever[0], best_ever[1] = iteration_count, delta_e
-    while (not cut(iteration_count,delta_e,best_ever)):
+    while (not cut(iteration_count,delta_e,best_ever,input_handler.cut_method,input_handler.cut_generation,input_handler.cut_delta)):
         artist_palette.mix_new_generation(input_handler)
         best = artist_palette.best_color
         delta_e = best.get_delta(target)
         if (abs(delta_e - best_ever[1]) >= ERROR):
             best_ever[0] = iteration_count
             best_ever[1] = delta_e
-        if (iteration_count % 10 == 0):
-            print(f"#{iteration_count} with delta_e = {delta_e}")
+        print(f"#{iteration_count} with delta_e = {delta_e}")
         iteration_count += 1
     return best
 
-def write_recipe(is_rgb, target, best):
-    coords = "RGB"
-    if (not is_rgb):
-        coords = "L*a*b*"
-    with open("output/recipe.txt", "w") as external_file:
-        add_text = f"DELTA\t\t\t{round(best.get_delta(target),4)}\n\nTARGET COLOR\t{coords}: {target.coord}\n\nBEST COLOR\t\t{coords}: {best.coord}\n\nRECIPE\n[ Base color ]: Proportion\n\n{best}"
-        print(add_text, file=external_file)
-    print("Results in output/recipe.txt")
-
-def run_visualization(target, finished_color):
+def run_visualization(target, finished_color, input_handler):
     app = QApplication(sys.argv)
     window = QWidget()
     window.setWindowTitle("Perfect Color")
@@ -83,10 +69,22 @@ def run_visualization(target, finished_color):
     window.show()
     sys.exit(app.exec())
 
+def write_recipe(is_rgb, target, best):
+    coords = "RGB"
+    if (not is_rgb):
+        coords = "L*a*b*"
+    with open("output/recipe.txt", "w") as external_file:
+        add_text = f"DELTA\t\t\t{round(best.get_delta(target),4)}\n\nTARGET COLOR\t{coords}: {target.coord}\n\nBEST COLOR\t\t{coords}: {best.coord}\n\nRECIPE\n[ Base color ]: Proportion\n\n{best}"
+        print(add_text, file=external_file)
+    print("Results in output/recipe.txt")
+
 def main():
+    with open('config.json', 'r') as f:
+        input = json.load(f)
+        input_handler = InputHandler(input)
     # Simulation
     target = input_handler.target_color
-    finished_color = run_simulation(target, input_handler.color_palette, input_handler.population_n)
+    finished_color = run_simulation(target, input_handler)
     # File outputs
     ## Recipe with color proportions
     write_recipe(input_handler.work_with_rgb, target, finished_color)
@@ -96,7 +94,7 @@ def main():
         print(add_text, file=external_file)
     print("Simulation data in output/graphics.txt")
     # Visualization
-    run_visualization(target, finished_color)
+    run_visualization(target, finished_color, input_handler)
 
 if __name__ == "__main__":
     main()

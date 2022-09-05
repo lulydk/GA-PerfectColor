@@ -61,4 +61,5 @@ class InputHandler:
         self.mut_prob = input['hyperparameters']['mut_prob']
         ## Cutting Method
         self.cut_method = input['hyperparameters']['cut_criteria']['method']
-        self.cut_value = input['hyperparameters']['cut_criteria']['value']
+        self.cut_generation = input['hyperparameters']['cut_criteria']['max_num_generations']
+        self.cut_delta = input['hyperparameters']['cut_criteria']['delta_treshold']

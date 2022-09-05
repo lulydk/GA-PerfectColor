@@ -1,30 +1,33 @@
 {
-    "target_color": [255, 255, 100],
-    
-    "work_with_rgb": 0,
-    "random_palette": 1,
+    "target_color": [100, 25, 100],
+
+    "work_with_rgb": 1,
+    "random_palette": 0,
     "color_palette_file": "color_palette.txt",
 
     "hyperparameters" : {
         "implementation": "fill-all",
 
-        "selection": "roulette",
-        "population_n": 200,
-        "individuals_k": 50,
+        "___selection_options": "elite, roulette, det-tournament",
+        "selection": "elite",
+        "population_n": 100,
+        "individuals_k": 80,
 
         "_torneos": "",
         "individuals_m": 100,
         "treshold": 0.5,
 
         "crossover": "one-p",
-        "cross_prob": 0.5,
+        "cross_prob": 0.9,
 
         "mutation": "",
         "mut_prob": 0.9,
 
         "cut_criteria": {
-            "method": "treshold",
-            "value": 5
+            "___cut_options": "generations, treshold, exhaustion",
+            "method": "exhaustion",
+            "max_num_generations": 100,
+            "delta_treshold": 1
         }
     }
 }
