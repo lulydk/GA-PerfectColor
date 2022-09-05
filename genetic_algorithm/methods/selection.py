@@ -55,20 +55,15 @@ def roulette(generation, k_value, target_color):
             j += 1
     return selected_colors
 
-# Get two random colors from the generation
+# Get m random colors from the generation
 # and the one with the best fitness wins
 # Repeat until k colors are selected
-def det_tournament(generation, k_value, target_color):
+def det_tournament(generation, k_value, m_value, target_color):
     winner_colors = []
     for i in range(k_value):
-        idx1 = random.randint(0,len(generation)-1)
-        color1 = generation[idx1]
-        idx2 = random.randint(0,len(generation)-1)
-        while(idx1 == idx2):
-            idx2 = random.randint(0,len(generation)-1)
-        color2 = generation[random.randint(0,len(generation)-1)]
-        if(color1.get_fitness(target_color) >= color2.get_fitness(target_color)):
-            winner_colors.append(color1)
-        else:
-            winner_colors.append(color2)
+        pool = []
+        for i in range(m_value):
+            pool.append(generation[random.randint(0,len(generation)-1)])
+        sorted_colors = sorted(pool, key=lambda c: c.get_fitness(target_color), reverse=True)
+        winner_colors.append(sorted_colors[0])
     return winner_colors

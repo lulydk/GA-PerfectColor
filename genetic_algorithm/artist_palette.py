@@ -24,7 +24,7 @@ class ArtistPalette:
         elif (input_data.selection_method == ROULETTE):
             selected = roulette(self.color_palette, input_data.individuals_k, self.target_color)
         elif (input_data.selection_method == DET_TOURNAMENT):
-            selected = det_tournament(self.color_palette, input_data.individuals_k, self.target_color)
+            selected = det_tournament(self.color_palette, input_data.individuals_k, input_data.individuals_m, self.target_color)
         
         # Crossover
         children = []
