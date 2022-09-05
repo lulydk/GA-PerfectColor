@@ -20,14 +20,14 @@ def cut(iteration, delta, best=None):
     elif (input_handler.cut_method == TRESHOLD):
         return delta <= input_handler.cut_value
     else:
-        if (iteration - best[0] > 100 and abs(delta - best[1]) < 0.00001):
+        if (iteration - best[0] > 200 and abs(delta - best[1]) < 0.00001):
             print("Cut by exhaustion")
             return True
 
 def main():
     #'''
     # Simulation
-    artist_palette = ArtistPalette(input_handler.color_palette, input_handler.population_n)
+    artist_palette = ArtistPalette(input_handler.color_palette, input_handler.population_n, input_handler.target_color)
     target = input_handler.target_color
     delta_e = 1000
     iteration_count = 0
@@ -38,14 +38,12 @@ def main():
         artist_palette.mix_new_generation(input_handler)
         best = artist_palette.best_color
         delta_e = best.get_delta(target)
-        if (delta_e < best_result[1]):
+        if (abs(delta_e - best_result[1]) >= 0.00001):
             best_result[0] = iteration_count
             best_result[1] = delta_e
         print(f"#{iteration_count} with delta_e = {delta_e}")
         iteration_count += 1
     if (input_handler.work_with_rgb):
-        color1 = sRGBColor(target.coord[0], target.coord[1], target.coord[2])
-        color2 = sRGBColor(best.coord[0], best.coord[1], best.coord[2])
         coords = "RGB"
     else:
         target_color = convert_color(LabColor(target.coord[0], target.coord[1], target.coord[2]), sRGBColor)
@@ -64,7 +62,10 @@ def main():
     window = QWidget()
     window.setWindowTitle("Perfect Color")
     window.setFixedWidth(800)
-    frame1(color1.get_rgb_hex(), color2.get_rgb_hex(),f"{coords}: {target}",f"{coords}: {best.coord}\n\nColor proportions:\n{best}\n\nDelta: {round(best.get_delta(target),4)}")
+    if (input_handler.work_with_rgb):
+        frame1(f"rgb({int(target.coord[0])},{int(target.coord[1])},{int(target.coord[2])})", f"rgb({int(best.coord[0])},{int(best.coord[1])},{int(best.coord[2])})",f"RGB: {target}",f"RGB: [{int(best.coord[0])} {int(best.coord[1])} {int(best.coord[2])}]\n\nColor proportions:\n{best}\n\nDelta: {round(best.get_delta(target),4)}")
+    else:
+        frame1(color1.get_rgb_hex(), color2.get_rgb_hex(),f"{coords}: {target}",f"{coords}: {best.coord}\n\nColor proportions:\n{best}\n\nDelta: {round(best.get_delta(target),4)}")
     window.setLayout(grid)
     window.show()
     sys.exit(app.exec())

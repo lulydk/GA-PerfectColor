@@ -5,7 +5,7 @@ import math, random
 def elite(generation, k_value, target_color):
     elite_colors = []
     # From smaller to larger distances
-    sorted_colors = sorted(generation, key=lambda c: c.get_delta(target_color))
+    sorted_colors = sorted(generation, key=lambda c: c.get_fitness(target_color), reverse=True)
     i = 0
     for color in sorted_colors:
         elite_len = len(elite_colors)
@@ -28,9 +28,9 @@ def elite(generation, k_value, target_color):
 # However, the less fit still get a chance to be chosen
 def roulette(generation, k_value, target_color):
     # Sum the fitness of every color
-    fitness = list(map(lambda c: c.get_delta(target_color), generation))
+    fitness = list(map(lambda c: c.get_fitness(target_color), generation))
     fit_sum = sum(fitness)
-    # Transform it to proportions:
+    # Replace them with the proportion:
     # The shortest the distance, the higher the value
     fitness = list(map(lambda f: fit_sum/f, fitness))
     prop_sum = sum(fitness)
@@ -67,7 +67,7 @@ def det_tournament(generation, k_value, target_color):
         while(idx1 == idx2):
             idx2 = random.randint(0,len(generation)-1)
         color2 = generation[random.randint(0,len(generation)-1)]
-        if(color1.get_delta(target_color) < color1.get_delta(target_color)):
+        if(color1.get_fitness(target_color) >= color2.get_fitness(target_color)):
             winner_colors.append(color1)
         else:
             winner_colors.append(color2)

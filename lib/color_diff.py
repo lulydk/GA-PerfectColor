@@ -1,8 +1,17 @@
-def delta_e_rgb(rgb1, rgb2):
-    rm = 0.5*(rgb1[0]+rgb2[0])
-    d = abs(sum((2+rm,4,3-rm)*(rgb1-rgb2)**2))**0.5
-    return d
+# Ended up sticking with euclidean distances
+# better performance and overall results
 
+def delta_e_rgb(rgb1, rgb2):
+    diff = rgb1 - rgb2
+    suma = diff[0]**2 + diff[1]**2 + diff[2]**2
+    return suma**0.5
+
+def delta_e_lab(lab1, lab2):
+    diff = lab1 - lab2
+    suma = diff[0]**2 + diff[1]**2 + diff[2]**2
+    return suma**0.5
+
+#'''
 # The functions in this module are used for comparing two LabColor objects
 # using various Delta E formulas
 
@@ -65,16 +74,4 @@ def delta_e_cie2000(color1, color2, Kl=1, Kc=1, Kh=1):
         color1_vector, color2_matrix, Kl=Kl, Kc=Kc, Kh=Kh)[0]
     # return numpy.asscalar(delta_e)
     return delta_e.item()
-
-
-# Calculates the Delta E (CMC) of two colors.
-##    CMC values
-##      Acceptability: pl=2, pc=1
-##      Perceptability: pl=1, pc=1
-def delta_e_cmc(color1, color2, pl=2, pc=1):
-    color1_vector = _get_lab_color1_vector(color1)
-    color2_matrix = _get_lab_color2_matrix(color2)
-    delta_e = color_diff_matrix.delta_e_cmc(
-        color1_vector, color2_matrix, pl=pl, pc=pc)[0]
-    # return numpy.asscalar(delta_e)
-    return delta_e.item()
+#'''
