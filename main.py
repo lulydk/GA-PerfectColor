@@ -1,9 +1,9 @@
 import sys
 import json
 import numpy as np
-from lib.constants import *
-from lib.window_frame import frame1, grid
-from lib.input_handler import InputHandler
+from utils.constants import *
+from utils.window_frame import frame1, grid
+from utils.input_handler import InputHandler
 import PyQt5.QtGui as qtg
 from PyQt5.QtWidgets import QApplication, QWidget
 from colormath.color_conversions import convert_color

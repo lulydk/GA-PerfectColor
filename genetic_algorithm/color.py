@@ -1,5 +1,5 @@
 import numpy as np
-from lib.color_diff import *
+from utils.color_diff import *
 from colormath.color_conversions import convert_color
 from colormath.color_objects import sRGBColor, LabColor
 

@@ -1,8 +1,7 @@
 import numpy as np
 from random import *
-from lib.constants import *
+from utils.constants import *
 from genetic_algorithm.color import Color
-from genetic_algorithm.methods.mutation import *
 from genetic_algorithm.methods.selection import *
 from genetic_algorithm.methods.crossover import *
 
@@ -27,24 +26,16 @@ class ArtistPalette:
             selected = det_tournament(self.color_palette, input_data.individuals_k, input_data.individuals_m, self.target_color)
         
         # Crossover
-        children = []
-        if (input_data.crossover_method == ONE_POINT):
-            children = one_point_crossover(selected, input_data.cross_prob, self.base_colors)
-        elif (input_data.crossover_method == TWO_POINT):
-            pass
+        children = one_point_crossover(selected, input_data.cross_prob, self.base_colors)
         
         # Mutation
         mutated_children = []
-        if (input_data.mutation_method == GEN):
-            #mutated_children = gen_mutation(children,self.base_colors,input_data.mut_prob)
-            pass
-        else:
-            for c in children:
-                if (random.uniform(0,1) < input_data.mut_prob):
-                    new = self.generate_color()
-                    mutated_children.append(new)
-                else:
-                    mutated_children.append(c)
+        for c in children:
+            if (random.uniform(0,1) < input_data.mut_prob):
+                new = self.generate_color()
+                mutated_children.append(new)
+            else:
+                mutated_children.append(c)
                
         # Forming new generation
         new_generation = []

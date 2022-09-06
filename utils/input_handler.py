@@ -52,13 +52,10 @@ class InputHandler:
         self.population_n = input['hyperparameters']['population_n']
         self.individuals_k = input['hyperparameters']['individuals_k']
         self.individuals_m = input['hyperparameters']['individuals_m']
-        self.treshold = input['hyperparameters']['treshold']
         ## Crossover
-        self.crossover_method = input['hyperparameters']['crossover']
         self.cross_prob = input['hyperparameters']['cross_prob']
         ## Mutation
-        self.mutation_method = input['hyperparameters']['mutation']
-        self.mut_prob = input['hyperparameters']['mut_prob']
+        self.mut_prob = input['hyperparameters']['mutation_prob']
         ## Cutting Method
         self.cut_method = input['hyperparameters']['cut_criteria']['method']
         self.cut_generation = input['hyperparameters']['cut_criteria']['max_num_generations']

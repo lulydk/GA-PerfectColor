@@ -63,6 +63,3 @@ def one_point_crossover(population, prob, genes):
             children.append(p1)
             children.append(p2)
     return children
-
-def one_point_crossover_traits(population, genes):
-    pass
