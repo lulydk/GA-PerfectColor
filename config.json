@@ -4,13 +4,14 @@
     "target_color": [100, 25, 100],
 
     "work_with_rgb": 1,
-    "random_palette": 0,
+    "random_palette": 1,
     "color_palette_file": "color_palette.txt",
 
     "run_benchmark": 1,
     "benchmark_param": 5,
 
     "hyperparameters" : {
+        "___implementation_options": "fill-all, fill-parent",
         "implementation": "fill-all",
 
         "___selection_options": "elite, roulette, det-tournament",
@@ -23,13 +24,13 @@
 
         "cross_prob": 0.9,
 
-        "mutation_prob": 0.5,
+        "mutation_prob": 0.9,
 
         "cut_criteria": {
-            "___cut_options": "generations, treshold, exhaustion",
-            "method": "treshold",
+            "___cut_options": "generations, threshold, exhaustion",
+            "method": "generations",
             "max_num_generations": 100,
-            "delta_treshold": 2
+            "delta_threshold": 2
         }
     }
 }

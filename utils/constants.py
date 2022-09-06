@@ -15,4 +15,4 @@ UNIFORM = 'uniform'
 GEN = 'gen'
 
 GENERATIONS = 'generations'
-TRESHOLD = 'treshold'
+THRESHOLD = 'threshold'

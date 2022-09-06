@@ -28,7 +28,7 @@ def get_fitness_vs_all_colors(run_benchmark, benchmark_runs=0):
     ax.set_title('Fitness through the generations')
     ax.set_ylabel('Fitness')
     ax.set_xlabel('Colors through generations')
-    ax.xaxis.set_minor_locator(MultipleLocator(population_size))
+    #ax.xaxis.set_minor_locator(MultipleLocator(population_size))
     #x = list(map(lambda num: num/population_size,range(len(array))))
     #ax.set_xlabel('Generations')
     #ax.xaxis.set_minor_locator(MultipleLocator(1))

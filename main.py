@@ -14,7 +14,7 @@ from genetic_algorithm.artist_palette import ArtistPalette
 def cut(iteration, delta, best_ever, cut_method, cut_generation, cut_delta):
     if (cut_method == GENERATIONS):
         return iteration >= cut_generation
-    elif (cut_method == TRESHOLD):
+    elif (cut_method == THRESHOLD):
         return delta <= cut_delta
     else:
         if (iteration - best_ever[0] > cut_generation and abs(delta - best_ever[1]) < ERROR):

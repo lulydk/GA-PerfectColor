@@ -62,4 +62,4 @@ class InputHandler:
         ## Cutting Method
         self.cut_method = input['hyperparameters']['cut_criteria']['method']
         self.cut_generation = input['hyperparameters']['cut_criteria']['max_num_generations']
-        self.cut_delta = input['hyperparameters']['cut_criteria']['delta_treshold']
+        self.cut_delta = input['hyperparameters']['cut_criteria']['delta_threshold']
