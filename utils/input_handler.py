@@ -44,6 +44,9 @@ class InputHandler:
         else:
             target_color_lab = convert_color(sRGBColor(input['target_color'][0]/255,input['target_color'][1]/255,input['target_color'][2]/255, False), LabColor)
             self.target_color = Color(target_color_lab.lab_l, target_color_lab.lab_a, target_color_lab.lab_b, False)
+        # Benchmark
+        self.run_benchmark = input['run_benchmark']
+        self.benchmark_param = input['benchmark_param']
         # GA Hyperparameters
         ## Implementation
         self.implementation = input['hyperparameters']['implementation']

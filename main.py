@@ -83,29 +83,29 @@ def write_recipe(is_rgb, target, best):
         print(add_text, file=external_file)
     print("Results in output/recipe.txt")
 
-def write_output_data(all_best_colors, target, population_size):
-    with open("output/graphics.txt", "w") as external_file:
+def write_output_data(all_colors, target, population_size, filename="graphics.txt"):
+    with open(f"output/{filename}", "w") as external_file:
         print(population_size, file=external_file)
-        for generation in all_best_colors:
+        for generation in all_colors:
             generation_string = ' '.join([f'{color.get_fitness(target)}' for color in generation])
             print(generation_string, file=external_file)
-    print("Simulation data in output/graphics.txt")
+    print(f"Simulation data in output/{filename}")
 
 def main():
     with open('config.json', 'r') as f:
         input = json.load(f)
         input_handler = InputHandler(input)
-    # Simulation
     target = input_handler.target_color
-    all_colors, all_best_colors, total_iterations = run_simulation(target, input_handler)
-    finished_color = all_best_colors[total_iterations]
-    # File outputs
-    ## Recipe with color proportions
-    write_recipe(input_handler.work_with_rgb, target, finished_color)
-    ## Data for graphics
-    write_output_data(all_colors, target, input_handler.population_n)
-    # Visualization
-    run_visualization(target, finished_color, input_handler)
+    if (input_handler.run_benchmark):
+        for i in range(input_handler.benchmark_param):
+            all_colors, all_best_colors, total_iterations = run_simulation(target, input_handler)
+            write_output_data(all_colors, target, input_handler.population_n, f"graphics{i + 1}.txt")
+    else:
+        all_colors, all_best_colors, total_iterations = run_simulation(target, input_handler)
+        finished_color = all_best_colors[total_iterations]
+        write_recipe(input_handler.work_with_rgb, target, finished_color)
+        write_output_data(all_colors, target, input_handler.population_n)
+        run_visualization(target, finished_color, input_handler)
 
 if __name__ == "__main__":
     main()
