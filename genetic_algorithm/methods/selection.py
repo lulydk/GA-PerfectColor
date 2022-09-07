@@ -43,12 +43,13 @@ def elite(generation, k_value, target_color):
 # The better the fitness, the greater the chances to be selected
 # However, the less fit still get a chance to be chosen
 def roulette(generation, k_value, target_color):
+    #return elite(generation, k_value, target_color)
     # Sum the fitness of every color
     fitness = list(map(lambda c: c.get_fitness(target_color), generation))
     fit_sum = sum(fitness)
     # Replace them with the proportion:
     # The shortest the distance, the higher the value
-    fitness = list(map(lambda f: fit_sum/f, fitness))
+    fitness = list(map(lambda f: f/fit_sum, fitness))
     prop_sum = sum(fitness)
     # Normalize between 0 and 1
     fitness = list(map(lambda p: p/prop_sum, fitness))

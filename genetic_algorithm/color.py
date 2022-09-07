@@ -9,7 +9,7 @@ class Color:
     # color_proportions = { color1: 0.25, color2: 0.40, color3: 0.35 }
 
     epsilon = 0.0000001 # Avoid dividing by zero when getting fitness
-    multiplier = 1000   # Make the fitness a bigger number, as it's difficult to reach values lower than 1
+    multiplier = 10000   # Make the fitness a bigger number, as it's difficult to reach values lower than 1
     
     def to_rgb_string(self):
         if (self.is_rgb):
@@ -41,12 +41,11 @@ class Color:
     def set_fitness(self, target_color):
         if (target_color == None):
             return 0
-        return 1/(self.get_delta(target_color) + Color.epsilon) * Color.multiplier
+        fitness = 1/(self.get_delta(target_color) + Color.epsilon) * Color.multiplier
+        return fitness
 
     def get_fitness(self, target_color):
-        if (self.fitness == 0):
-            self.set_fitness(target_color)
-        return self.fitness
+        return 1/(self.get_delta(target_color) + Color.epsilon) * Color.multiplier
 
     def __init__(self, coord0, coord1, coord2, rgb, color_proportions=None, target_color=None):
         self.is_rgb = rgb

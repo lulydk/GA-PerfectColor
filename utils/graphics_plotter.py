@@ -27,12 +27,7 @@ def get_fitness_vs_all_colors(run_benchmark, benchmark_runs=0):
     fig, ax = plt.subplots()
     ax.set_title('Fitness through the generations')
     ax.set_ylabel('Fitness')
-    ax.set_xlabel('Colors through generations')
-    #ax.xaxis.set_minor_locator(MultipleLocator(population_size))
-    #x = list(map(lambda num: num/population_size,range(len(array))))
-    #ax.set_xlabel('Generations')
-    #ax.xaxis.set_minor_locator(MultipleLocator(1))
-    #ax.plot(x, array)
+    ax.set_xlabel('Best colors per generation')
     ax.plot(array)
     plt.show()
 

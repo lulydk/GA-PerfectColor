@@ -6,8 +6,8 @@ def fill_all(current_generation, children, selection_proportion, target_color):
     population_size = len(current_generation)
     group1 = floor(selection_proportion*(population_size-1))
     group2 = ceil((1-selection_proportion)*(population_size-1))
-    from_children = selection(None, children, group1, target_color, None)
-    from_current = selection(None, current_generation, group2, target_color, None)
+    from_children = selection("elite", generation=children, k_value=group1, target_color=target_color, m_value=None)
+    from_current = selection("elite", generation=current_generation, k_value=group2, target_color=target_color, m_value=None)
     return [current_best] + from_children + from_current
 
 def fill_parent(current_generation, children, k_value, target_color):

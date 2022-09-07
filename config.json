@@ -4,7 +4,7 @@
     "target_color": [100, 25, 100],
 
     "work_with_rgb": 1,
-    "random_palette": 1,
+    "random_palette": 0,
     "color_palette_file": "color_palette.txt",
 
     "run_benchmark": 0,
@@ -16,21 +16,21 @@
         "selection_proportion": 0.5,
 
         "___selection_options": "elite, roulette, det-tournament",
-        "selection": "tournament",
+        "selection": "roulette",
         "population_n": 100,
-        "individuals_k": 70,
+        "individuals_k": 60,
 
         "___tornament_param": "",
         "individuals_m": 100,
 
         "cross_prob": 0.9,
 
-        "mutation_prob": 0.7,
+        "mutation_prob": 0.4,
 
         "cut_criteria": {
             "___cut_options": "generations, threshold, exhaustion",
             "method": "generations",
-            "max_num_generations": 20,
+            "max_num_generations": 200,
             "delta_threshold": 2
         }
     }

@@ -28,7 +28,7 @@ def run_simulation(target, input_handler):
     delta_e = all_best[0].get_delta(target)
     all_colors = []
     all_colors.append(artist_palette.color_palette)
-    iteration_count = 0
+    iteration_count = 1
     best_ever = np.zeros(2)
     best_ever[0], best_ever[1] = iteration_count, delta_e
     while (not cut(iteration_count,delta_e,best_ever,input_handler.cut_method,input_handler.cut_generation,input_handler.cut_delta)):
@@ -40,7 +40,7 @@ def run_simulation(target, input_handler):
         if (abs(delta_e - best_ever[1]) >= ERROR):
             best_ever[0] = iteration_count
             best_ever[1] = delta_e
-        print(f"#{iteration_count} with delta_e = {delta_e}")
+        #print(f"#{iteration_count} with delta_e = {delta_e}")
         iteration_count += 1
     return all_colors, all_best, iteration_count
 
@@ -83,12 +83,18 @@ def write_recipe(is_rgb, target, best):
         print(add_text, file=external_file)
     print("Results in output/recipe.txt")
 
+def dump_data(all_colors, target_color):
+    with open(f"output/data_dump.txt", "w") as external_file:
+        print(f"Generaciones: {len(all_colors)}", file=external_file)
+        for generation in all_colors:
+            generation_string = '\n'.join([f'{color.get_fitness(target_color)}' for color in generation])
+            print(generation_string, file=external_file)
+        
 def write_output_data(all_colors, target, population_size, filename="graphics.txt"):
     with open(f"output/{filename}", "w") as external_file:
         print(population_size, file=external_file)
-        for generation in all_colors:
-            generation_string = ' '.join([f'{color.get_fitness(target)}' for color in generation])
-            print(generation_string, file=external_file)
+        colors_string = ' '.join([f'{color.get_fitness(target)}' for color in all_colors])
+        print(colors_string, file=external_file)
     print(f"Simulation data in output/{filename}")
 
 def main():
@@ -97,14 +103,13 @@ def main():
         input_handler = InputHandler(input)
     target = input_handler.target_color
     if (input_handler.run_benchmark):
-        for i in range(input_handler.benchmark_param):
-            all_colors, all_best_colors, total_iterations = run_simulation(target, input_handler)
-            write_output_data(all_colors, target, input_handler.population_n, f"graphics{i + 1}.txt")
+        pass
     else:
         all_colors, all_best_colors, total_iterations = run_simulation(target, input_handler)
-        finished_color = all_best_colors[total_iterations]
+        finished_color = all_best_colors[total_iterations-1]
         write_recipe(input_handler.work_with_rgb, target, finished_color)
-        write_output_data(all_colors, target, input_handler.population_n)
+        dump_data(all_colors, target)
+        write_output_data(all_best_colors, target, input_handler.population_n)
         run_visualization(target, finished_color, input_handler)
 
 if __name__ == "__main__":
