@@ -68,7 +68,7 @@ Since JSON is a data-only format, it doesn’t support comments. That’s why th
     "benchmark_param": 5,
 
     "hyperparameters" : {
-				"___implementation_options": "fill-all, fill-parent",
+	"___implementation_options": "fill-all, fill-parent",
         "implementation": "fill-all",
 
         "___selection_options": "elite, roulette, det-tournament",
@@ -161,7 +161,7 @@ $$
 X\\ 
 Y\\ 
 Z
-\end{bmatrix} = \sum_{i=1}^{\#genes} \alpha_i \begin{bmatrix}
+\end{bmatrix} = \sum_{i=1}^{genes} \alpha_i \begin{bmatrix}
 X_i\\ 
 Y_i\\ 
 Z_i
