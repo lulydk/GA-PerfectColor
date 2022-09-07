@@ -12,7 +12,6 @@ def selection(selection_method, generation, k_value, target_color, m_value):
         selected = roulette(generation, k_value, target_color)
     elif (selection_method == DET_TOURNAMENT):
         if (m_value == None):
-            print(f"k = {k_value}")
             m_value = random.randint(2, k_value)
         selected = det_tournament(generation, k_value, m_value, target_color)
     return selected

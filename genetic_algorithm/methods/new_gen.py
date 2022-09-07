@@ -3,12 +3,11 @@ from genetic_algorithm.methods.selection import selection
 
 def fill_all(current_generation, children, selection_proportion, target_color):
     current_best = sorted(current_generation, key=lambda c: c.get_fitness(target_color), reverse=True)[0]
-    all = current_generation + children
     population_size = len(current_generation)
     group1 = floor(selection_proportion*(population_size-1))
-    from_children = selection(None, all, group1, target_color, None)
     group2 = ceil((1-selection_proportion)*(population_size-1))
-    from_current = selection(None, all, group2, target_color, None)
+    from_children = selection(None, children, group1, target_color, None)
+    from_current = selection(None, current_generation, group2, target_color, None)
     return [current_best] + from_children + from_current
 
 def fill_parent(current_generation, children, k_value, target_color):
@@ -19,5 +18,5 @@ def fill_parent(current_generation, children, k_value, target_color):
         selected_children = selection(None, children, population_size, target_color, None)
         return selected_children
     else:
-        selected = selection(None, current_generation, population_size-k_value, target_color, None)
+        selected = selection(None, current_generation, population_size-len(children), target_color, None)
         return children + selected

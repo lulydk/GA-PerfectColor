@@ -37,13 +37,10 @@ class ArtistPalette:
         if (input_data.implementation == FILL_ALL):
             new_generation = fill_all(self.color_palette, mutated_children, input_data.selection_proportion, input_data.target_color)
         elif (input_data.implementation == FILL_PARENT):
-            new_generation = self.color_palette
-            #print(f"individuals_k = {input_data.individuals_k}")
-            #new_generation = fill_parent(self.color_palette, mutated_children, input_data.individuals_k, input_data.target_color)
+            new_generation = fill_parent(self.color_palette, mutated_children, input_data.individuals_k, input_data.target_color)
         
         self.color_palette = new_generation
         self.best_color = self.get_best_colors()[0]
-        print(self.best_color.coord)
 
 
     # color_proportions = { color1: 0.25, color2: 0.40, color3: 0.35 }
