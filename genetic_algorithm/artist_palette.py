@@ -4,6 +4,7 @@ from utils.constants import *
 from genetic_algorithm.color import Color
 from genetic_algorithm.methods.selection import *
 from genetic_algorithm.methods.crossover import *
+from genetic_algorithm.methods.new_gen import *
 
 class ArtistPalette:
 
@@ -17,14 +18,8 @@ class ArtistPalette:
     def mix_new_generation(self, input_data) -> None:
 
         # Selection
-        selected = []
-        if (input_data.selection_method == ELITE):
-            selected = elite(self.color_palette, input_data.individuals_k, self.target_color)
-        elif (input_data.selection_method == ROULETTE):
-            selected = roulette(self.color_palette, input_data.individuals_k, self.target_color)
-        elif (input_data.selection_method == DET_TOURNAMENT):
-            selected = det_tournament(self.color_palette, input_data.individuals_k, input_data.individuals_m, self.target_color)
-        
+        selected = selection(input_data.selection_method, self.color_palette, input_data.individuals_k, self.target_color, input_data.individuals_m)
+
         # Crossover
         children = one_point_crossover(selected, input_data.cross_prob, self.base_colors)
         
@@ -40,19 +35,15 @@ class ArtistPalette:
         # Forming new generation
         new_generation = []
         if (input_data.implementation == FILL_ALL):
-            all = mutated_children + self.color_palette
-            new_generation = sorted(all, key=lambda c: c.get_fitness(self.target_color), reverse=True)[:input_data.population_n]
+            new_generation = fill_all(self.color_palette, mutated_children, input_data.selection_proportion, input_data.target_color)
         elif (input_data.implementation == FILL_PARENT):
-            if (input_data.individuals_k > input_data.population_n):
-                new_generation = mutated_children[:input_data.population_n]
-            else:
-                new_generation = mutated_children
-                best_last_gen = self.get_best_colors()
-                for i in range(input_data.population_n - input_data.individuals_k):
-                    new_generation.append(best_last_gen[i])
+            new_generation = self.color_palette
+            #print(f"individuals_k = {input_data.individuals_k}")
+            #new_generation = fill_parent(self.color_palette, mutated_children, input_data.individuals_k, input_data.target_color)
         
         self.color_palette = new_generation
         self.best_color = self.get_best_colors()[0]
+        print(self.best_color.coord)
 
 
     # color_proportions = { color1: 0.25, color2: 0.40, color3: 0.35 }

@@ -2,7 +2,7 @@ import json
 import matplotlib.pyplot as plt
 from matplotlib.ticker import (MultipleLocator)
 
-def get_values(filename="graphics1.txt"):
+def get_values(filename="graphics.txt"):
     path = f"C:/Users/lulyd/Documents/GA-PerfectColor/output/{filename}"
     with open(path, "r") as file:
         population_size = int(file.readline())

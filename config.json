@@ -7,15 +7,16 @@
     "random_palette": 1,
     "color_palette_file": "color_palette.txt",
 
-    "run_benchmark": 1,
+    "run_benchmark": 0,
     "benchmark_param": 5,
 
     "hyperparameters" : {
         "___implementation_options": "fill-all, fill-parent",
         "implementation": "fill-all",
+        "selection_proportion": 0.5,
 
         "___selection_options": "elite, roulette, det-tournament",
-        "selection": "roulette",
+        "selection": "tournament",
         "population_n": 100,
         "individuals_k": 70,
 
@@ -24,12 +25,12 @@
 
         "cross_prob": 0.9,
 
-        "mutation_prob": 0.9,
+        "mutation_prob": 0.7,
 
         "cut_criteria": {
             "___cut_options": "generations, threshold, exhaustion",
             "method": "generations",
-            "max_num_generations": 100,
+            "max_num_generations": 20,
             "delta_threshold": 2
         }
     }

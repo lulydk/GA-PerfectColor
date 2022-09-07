@@ -6,6 +6,7 @@ FILL_PARENT = 'fill-parent'
 ELITE = 'elite'
 ROULETTE = 'roulette'
 DET_TOURNAMENT = 'det-tournament'
+SELECTION = [ELITE, ROULETTE, DET_TOURNAMENT]
 
 ONE_POINT = 'one-p'
 TWO_POINT = 'two-p'

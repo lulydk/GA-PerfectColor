@@ -50,6 +50,7 @@ class InputHandler:
         # GA Hyperparameters
         ## Implementation
         self.implementation = input['hyperparameters']['implementation']
+        self.selection_proportion = input['hyperparameters']['selection_proportion']
         ## Selection
         self.selection_method = input['hyperparameters']['selection']
         self.population_n = input['hyperparameters']['population_n']
