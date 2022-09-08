@@ -1,4 +1,5 @@
 import sys
+import csv
 import json
 import numpy as np
 from utils.constants import *
@@ -84,11 +85,11 @@ def write_recipe(is_rgb, target, best):
     print("Results in output/recipe.txt")
 
 def dump_data(all_colors, target_color):
-    with open(f"output/data_dump.txt", "w") as external_file:
-        print(f"Generaciones: {len(all_colors)}", file=external_file)
+    with open('output/data_dump.csv', 'w') as f:
+        writer = csv.writer(f)
         for generation in all_colors:
-            generation_string = '\n'.join([f'{color.get_fitness(target_color)}' for color in generation])
-            print(generation_string, file=external_file)
+            generation_fitness = list(map(lambda color: color.get_fitness(target_color), generation))
+            writer.writerow(generation_fitness)
         
 def write_output_data(all_colors, target, population_size, filename="graphics.txt"):
     with open(f"output/{filename}", "w") as external_file:

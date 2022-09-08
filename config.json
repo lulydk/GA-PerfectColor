@@ -16,7 +16,7 @@
         "selection_proportion": 0.5,
 
         "___selection_options": "elite, roulette, det-tournament",
-        "selection": "roulette",
+        "selection": "det-tournament",
         "population_n": 100,
         "individuals_k": 60,
 
@@ -30,7 +30,7 @@
         "cut_criteria": {
             "___cut_options": "generations, threshold, exhaustion",
             "method": "generations",
-            "max_num_generations": 200,
+            "max_num_generations": 100,
             "delta_threshold": 2
         }
     }
